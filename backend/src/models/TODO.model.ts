@@ -1,5 +1,15 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 
-// const todo = new mongoose.Schema({
-//     title:string
-// })
+interface ToDoSchemaI extends Document{
+    title:string;
+}
+
+const todoSchema = new mongoose.Schema<ToDoSchemaI>({
+    title:{
+        type:String,
+        required:true,
+        trim:true
+    }
+},{timestamps:true})
+
+export const TO_DO = mongoose.model<ToDoSchemaI>('To-Do',todoSchema)  
