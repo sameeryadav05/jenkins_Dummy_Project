@@ -1,5 +1,10 @@
 pipeline{
     agent any
+
+    triggers{
+        githubPush()
+    }
+
     stages{
         stage('Test')
         {
@@ -20,4 +25,17 @@ pipeline{
             }
         }
     }
+
+    post {
+
+        failure {
+            emailext(
+                subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Build failed: ${env.BUILD_URL}",
+                to: "your-email@gmail.com",
+                attachLog: true
+            )
+        }
+    }
 }
+
